@@ -1,0 +1,6 @@
+require("config.colorscheme")
+require("config.lualine")
+require("config.completions")
+require("config.lspconfig")
+require("config.neotree")
+require("config.treesitter")
