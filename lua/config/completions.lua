@@ -2,6 +2,8 @@ local cmp = require("cmp")
 
 local lspkind = require("lspkind")
 
+require("luasnip.loaders.from_vscode").load()
+
 cmp.setup({
 	snippet = {
 		expand = function(args)
