@@ -3,6 +3,8 @@ local lsp = require("lspconfig")
 local on_attach = function()
 	vim.keymap.set('n', "<leader>rn", vim.lsp.buf.rename, {})
 	vim.keymap.set('n', "<leader>ca", vim.lsp.buf.code_action, {})
+
+	vim.keymap.set('n', "<leader>gd", vim.lsp.buf.definition, {})
 end
 
 vim.diagnostic.config({
@@ -40,6 +42,11 @@ lsp.ts_ls.setup({
 })
 
 lsp.clangd.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lsp.pyright.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
