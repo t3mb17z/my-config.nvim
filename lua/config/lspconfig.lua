@@ -32,6 +32,7 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", }, {
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 lsp.lua_ls.setup({
+	cmd = { "/home/john/.local/lua-language-server/bin/lua-language-server" },
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
@@ -42,11 +43,40 @@ lsp.ts_ls.setup({
 })
 
 lsp.clangd.setup({
+	cmd = { "clangd-19" },
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lsp.rust_analyzer.setup({
+	-- cmd = { "/home/john/.cargo/ra-multiplex/target/release/ra-multiplex", 'server' },
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
 
 lsp.pyright.setup({
+	cmd = { "/home/john/.local/python-venv/private/bin/pyright-python-langserver", "--stdio" },
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lsp.bashls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lsp.jsonls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	settings = {
+		json = {
+			schemas = require("schemastore").json.schemas(),
+			validate = { enable = true }
+		}
+	}
+})
+
+lsp.emmet_language_server.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })

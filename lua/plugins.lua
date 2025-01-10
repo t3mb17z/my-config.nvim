@@ -39,5 +39,7 @@ return {
 	  lazy = false,
 	  priority = 1000,
   	opts = {},
-	}
+	},
+  "b0o/schemastore.nvim",
+	"alvan/vim-closetag"
 }
