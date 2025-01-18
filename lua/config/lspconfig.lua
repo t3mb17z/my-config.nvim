@@ -54,10 +54,21 @@ lsp.rust_analyzer.setup({
 	on_attach = on_attach,
 })
 
+local pyvenv = "/home/john/.local/python-venv"
 lsp.pyright.setup({
-	cmd = { "/home/john/.local/python-venv/private/bin/pyright-python-langserver", "--stdio" },
+	cmd = { pyvenv .. "/private/bin/pyright-python-langserver", "--stdio" },
 	capabilities = capabilities,
 	on_attach = on_attach,
+	settings = {
+		python = {
+			venvPath = pyvenv,
+			analysis = {
+				extraPaths = {
+					pyvenv .. "/private"
+				}
+			}
+		}
+	}
 })
 
 lsp.bashls.setup({
