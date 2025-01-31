@@ -5,6 +5,8 @@ local on_attach = function()
 	vim.keymap.set('n', "<leader>ca", vim.lsp.buf.code_action, {})
 
 	vim.keymap.set('n', "<leader>gd", vim.lsp.buf.definition, {})
+	vim.keymap.set('n', "<leader>gi", vim.lsp.buf.implementation, {})
+	vim.keymap.set('n', "<leader>gr", require("telescope.builtin").lsp_references, {})
 end
 
 vim.diagnostic.config({
@@ -22,19 +24,44 @@ vim.diagnostic.config({
 
 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", }, {
 	callback = function()
-		vim.diagnostic.open_float(0, {
+		vim.diagnostic.open_float({
 			focusable = false,
 			border = "rounded",
 		})
 	end
 })
 
+vim.diagnostic.open_float()
+
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 lsp.lua_ls.setup({
-	cmd = { "/home/john/.local/lua-language-server/bin/lua-language-server" },
 	capabilities = capabilities,
 	on_attach = on_attach,
+	on_init = function(client)
+		if client.workspace_folders then
+			local path = client.workspace_folders[1].name
+			if vim.loop.fs_stat(path .. '/.luarc.json') or
+				vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+				return
+			end
+		end
+
+		client.config.settings.Lua = vim.tbl_deep_extend('force',
+			client.config.settings.Lua, {
+				runtime = {
+					version = 'LuaJIT'
+				},
+				workspace = {
+					checkThirdParty = false,
+					library = vim.api.nvim_get_runtime_file("", true)
+				}
+			}
+		)
+	end,
+	settings = {
+		Lua = {},
+	}
 })
 
 lsp.ts_ls.setup({
@@ -56,18 +83,16 @@ lsp.rust_analyzer.setup({
 
 local pyvenv = "/home/john/.local/python-venv"
 lsp.pyright.setup({
-	cmd = { pyvenv .. "/private/bin/pyright-python-langserver", "--stdio" },
+	cmd = { pyvenv .. "/private/bin/pyright-langserver", "--stdio" },
 	capabilities = capabilities,
 	on_attach = on_attach,
+	on_init = function(client)
+		client.config.settings.python = vim.tbl_deep_extend('force', client.config.settings.python, {
+			pythonPath = pyvenv .. "/private",
+		})
+	end,
 	settings = {
-		python = {
-			venvPath = pyvenv,
-			analysis = {
-				extraPaths = {
-					pyvenv .. "/private"
-				}
-			}
-		}
+		python = {}
 	}
 })
 
@@ -88,6 +113,11 @@ lsp.jsonls.setup({
 })
 
 lsp.emmet_language_server.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lsp.cssls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })

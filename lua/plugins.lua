@@ -41,5 +41,14 @@ return {
   	opts = {},
 	},
   "b0o/schemastore.nvim",
-	"alvan/vim-closetag"
+	"alvan/vim-closetag",
+  {
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
+	-- For `plugins.lua` users.
+	{
+    "OXY2DEV/markview.nvim",
+    lazy = false
+	},
 }

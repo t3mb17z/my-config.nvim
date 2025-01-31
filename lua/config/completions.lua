@@ -1,8 +1,16 @@
 local cmp = require("cmp")
 
-local lspkind = require("lspkind")
-
 require("luasnip.loaders.from_vscode").load()
+
+local icons = {
+	Array = "",
+	Function = "",
+	Text = "",
+	Object = "",
+	Class = "",
+	Snippet = "",
+	Field = "",
+}
 
 cmp.setup({
 	snippet = {
@@ -11,9 +19,10 @@ cmp.setup({
 		end,
 	},
 	formatting = {
-		format = lspkind.cmp_format({
-			mode = "symbol_text",
-		})
+		format = function(_, vim_item)
+			print(vim_item.kind) --= (icons[vim_item.kind] or "Foo") .. " " .. vim_item.kind
+			return vim_item
+		end,
 	},
 	window = {
 		completion = cmp.config.window.bordered(),
