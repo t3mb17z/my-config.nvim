@@ -1,10 +1,10 @@
-vim.o.background = "dark"
+--[[vim.o.background = "dark"
 
 require("gruvbox").setup({
 	italic = {
 		strings = false,
 		comments = false,
 	}
-})
+})]]
 
-vim.cmd.colorscheme("gruvbox")
+vim.cmd.colorscheme("catppuccin-mocha")
