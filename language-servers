@@ -10,6 +10,7 @@ if ! command -v "lua-language-server" > /dev/null 2>&1; then
   fi
   cd "$CURDIR" || return
 fi
+
 if ! command -v "typescript-language-server" > /dev/null 2>&1; then
   curl -fsSL https://deb.nodesource.com/setup_23.x -o nodesource_setup.sh
   sudo -E bash nodesource_setup.sh
