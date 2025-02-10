@@ -76,9 +76,19 @@ lsp.clangd.setup({
 })
 
 lsp.rust_analyzer.setup({
-	-- cmd = { "/home/john/.cargo/ra-multiplex/target/release/ra-multiplex", 'server' },
+  -- cmd = vim.lsp.rpc.connect("127.0.0.1", 27631),
+  cmd = { "rust-analyzer", },
 	capabilities = capabilities,
 	on_attach = on_attach,
+  --[[settings = {
+    ['rust-analyzer'] = {
+      lspMux = {
+        version = "1",
+        method = "connect",
+        server = "rust-analyzer",
+      }
+    }
+  }]]
 })
 
 local pyvenv = "/home/john/.local/python-venv"
