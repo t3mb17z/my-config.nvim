@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 if ! command -v "lua-language-server" > /dev/null 2>&1; then
+  echo "Installing LuaLS"
   CURDIR="$(pwd)"
   cd "$HOME/.local" || return
   git clone https://github.com/LuaLS/lua-language-server
@@ -9,9 +10,11 @@ if ! command -v "lua-language-server" > /dev/null 2>&1; then
     echo "LuaLS was installed successfully"
   fi
   cd "$CURDIR" || return
+  echo 'PATH=$HOME/.local/lua-language-server/build/bin/' >> "$HOME/.zshrc"
 fi
 
 if ! command -v "typescript-language-server" > /dev/null 2>&1; then
+  echo "Installing TypeScript LS"
   curl -fsSL https://deb.nodesource.com/setup_23.x -o nodesource_setup.sh
   sudo -E bash nodesource_setup.sh
   sudo apt-get install -y nodejs
@@ -23,6 +26,7 @@ if ! command -v "typescript-language-server" > /dev/null 2>&1; then
 fi
 
 if ! command -v "clangd-19" > /dev/null 2>&1; then
+  echo "Installing Clangd"
   sudo apt install clangd-19
   #shellcheck disable=SC2181
   if (($? == 0)); then
@@ -30,20 +34,21 @@ if ! command -v "clangd-19" > /dev/null 2>&1; then
   fi
 fi
 
-if ! command -v "pyright-langserver" > /dev/null 2>&1; then
+if ! command -v pyright; then
+  echo "Installing Pyright"
   LOCAL_PYTHON_VENV=".local/python-venv/virt_env"
-  sudo apt install python3.11 pydoc3.11-venv
+  sudo apt install python3.11 python3.11-venv
   mkdir -p "$LOCAL_PYTHON_VENV"
   python3.11 -m venv "$LOCAL_PYTHON_VENV"
   if [[ ! "$PYTHON_VENV" ]]; then
     #shellcheck disable=SC2016
-    echo 'export $PYTHON_VENV="$HOME/.local/python-venv/virt_env"'
+    echo 'export PYTHON_VENV="$HOME/.local/python-venv/virt_env"' >> "$HOME/.zshrc"
   fi
   installation=$?
   "$LOCAL_PYTHON_VENV/bin/pip3" install pyright
   if ! alias vpip > /dev/null 2>&1; then
     #shellcheck disable=SC2016
-    echo 'alias vpip="$PYTHON_VENV/bin/pip3"' > "$HOME/.zshrc"
+    echo 'alias vpip="$PYTHON_VENV/bin/pip3"' >> "$HOME/.zshrc"
   fi
   vpipalias=$?
   if [[ $vpipalias -eq 0 ]]; then
@@ -51,13 +56,23 @@ if ! command -v "pyright-langserver" > /dev/null 2>&1; then
   fi
   if ! alias vpython > /dev/null 2>&1; then
     #shellcheck disable=SC2016
-    echo 'alias vpython="$PYTHON_VENV/bin/python3"' > "$HOME/.zshrc"
+    echo 'alias vpython="$PYTHON_VENV/bin/python3"' >> "$HOME/.zshrc"
   fi
   vpythonalias=$?
   if [[ $vpythonalias -eq 0 ]]; then
     echo "alias \"vpython\" added successfully"
   fi
+  echo "PATH=$HOME/.local/python-venv/virt_env/bin:$PATH" >> "$HOME/.zshrc"
   if [[ $installation -eq 0 ]]; then
     echo "Pyright installed successfully"
   fi
 fi
+
+if ! command -v bash-language-server > /dev/null 2>&1; then
+  echo "Installing Bash LS"
+  npm install --global bash-language-server
+  sudo apt install shellcheck
+  echo "Bash LS installed now"
+fi
+
+zsh "$HOME/.zshrc"

@@ -93,7 +93,7 @@ lsp.rust_analyzer.setup({
 
 local pyvenv = "/home/john/.local/python-venv"
 lsp.pyright.setup({
-	cmd = { pyvenv .. "/private/bin/pyright-langserver", "--stdio" },
+	cmd = { "pyright-langserver", "--stdio" },
 	capabilities = capabilities,
 	on_attach = on_attach,
 	on_init = function(client)
