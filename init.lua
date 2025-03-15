@@ -1,4 +1,4 @@
-vim.o.shell = "zsh"
+vim.o.shell = "bash"
 
 vim.g.mapleader = ' '
 vim.gnmaplocalleader = ' '

@@ -53,7 +53,14 @@ return {
 	},
 	{
 		"catppuccin/nvim",
-name = "catppuccin",
+    name = "catppuccin",
 		priority = 1000
-	}
+	},
+  "mfussenegger/nvim-dap",
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"
+    }
+  }
 }

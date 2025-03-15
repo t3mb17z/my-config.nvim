@@ -7,4 +7,4 @@ require("gruvbox").setup({
 	}
 })]]
 
-vim.cmd.colorscheme("catppuccin-mocha")
+vim.cmd.colorscheme("tokyonight-storm")

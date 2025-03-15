@@ -3,10 +3,11 @@ local lsp = require("lspconfig")
 local on_attach = function()
 	vim.keymap.set('n', "<leader>rn", vim.lsp.buf.rename, {})
 	vim.keymap.set('n', "<leader>ca", vim.lsp.buf.code_action, {})
-
 	vim.keymap.set('n', "<leader>gd", vim.lsp.buf.definition, {})
 	vim.keymap.set('n', "<leader>gi", vim.lsp.buf.implementation, {})
+
 	vim.keymap.set('n', "<leader>gr", require("telescope.builtin").lsp_references, {})
+  vim.keymap.set('n', "<leader>lg", require("telescope.builtin").live_grep, {})
 end
 
 vim.diagnostic.config({
@@ -54,7 +55,9 @@ lsp.lua_ls.setup({
 				},
 				workspace = {
 					checkThirdParty = false,
-					library = vim.api.nvim_get_runtime_file("", true)
+					library = {
+            vim.fn.expand("$VIMRUNTIME"),
+          }
 				}
 			}
 		)
@@ -76,19 +79,34 @@ lsp.clangd.setup({
 })
 
 lsp.rust_analyzer.setup({
-  -- cmd = vim.lsp.rpc.connect("127.0.0.1", 27631),
-  cmd = { "rust-analyzer", },
-	capabilities = capabilities,
-	on_attach = on_attach,
-  --[[settings = {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
     ['rust-analyzer'] = {
-      lspMux = {
-        version = "1",
-        method = "connect",
-        server = "rust-analyzer",
+      checkOnSave = {
+        command = "clippy",
+      },
+      cachePriming = {
+        enable = true
+      },
+      imports = {
+        granularity = {
+          group = "module"
+        },
+        prefix = "self"
+      },
+      cargo = {
+        buildScripts = {
+          enable = false
+        },
+        loadOutDirsFromCheck = true,
+      },
+      procMacro = {
+        enable = false
       }
     }
-  }]]
+  },
+  root_dir = require("lspconfig.util").root_pattern("Cargo.toml", ".git")
 })
 
 local pyvenv = "/home/john/.local/python-venv"
@@ -105,6 +123,16 @@ lsp.pyright.setup({
 		python = {}
 	}
 })
+
+local javaconf = require("config.java")
+javaconf.root_dir = vim.fs.root(0, {
+  ".git", "mvnw", "gradlew",
+})
+javaconf.capabilities = capabilities
+javaconf.on_attach = on_attach
+
+lsp.jdtls.setup(javaconf)
+
 
 lsp.bashls.setup({
 	capabilities = capabilities,
