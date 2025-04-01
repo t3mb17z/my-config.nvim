@@ -1,8 +1,5 @@
 return {
 	{
-		"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate"
 	},
@@ -31,7 +28,6 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     }
   },
 	{
@@ -47,20 +43,24 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
 	-- For `plugins.lua` users.
-	{
-    "OXY2DEV/markview.nvim",
-    lazy = false
-	},
-	{
-		"catppuccin/nvim",
-    name = "catppuccin",
-		priority = 1000
-	},
+
   "mfussenegger/nvim-dap",
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
       "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"
     }
+  },
+  { "EdenEast/nightfox.nvim" },
+  "github/copilot.vim",
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
+  },
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons'
   }
 }
