@@ -13,6 +13,7 @@ end
 vim.diagnostic.config({
 	virtual_text = false,
 	update_in_insert = true,
+  virtual_lines = true,
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = "\u{f530}",
@@ -31,8 +32,6 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", }, {
 		})
 	end
 })
-
-vim.diagnostic.open_float()
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -57,6 +56,10 @@ lsp.lua_ls.setup({
 					checkThirdParty = false,
 					library = {
             vim.fn.expand("$VIMRUNTIME"),
+            os.getenv("HOME") .. "/repos/volt.nvim/",
+            "/usr/local/share/nvim/runtime/pack/dist/opt/netrw",
+            "/usr/local/share/nvim/runtime/pack/dist/opt/matchit",
+            "/usr/local/lib64/nvim"
           }
 				}
 			}
@@ -158,4 +161,10 @@ lsp.emmet_language_server.setup({
 lsp.cssls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+})
+
+lsp.gopls.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+  root_dir = require("lspconfig.util").root_pattern("go.mod", ".git")
 })

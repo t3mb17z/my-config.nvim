@@ -19,8 +19,8 @@ return {
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"rafamadriz/friendly-snippets",
-	},
-	"onsails/lspkind.nvim",
+	  "onsails/lspkind.nvim",
+  },
 	{
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -52,7 +52,6 @@ return {
     }
   },
   { "EdenEast/nightfox.nvim" },
-  "github/copilot.vim",
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
@@ -62,5 +61,12 @@ return {
     'akinsho/bufferline.nvim',
     version = "*",
     dependencies = 'nvim-tree/nvim-web-devicons'
+  },
+  { -- My themes
+    "rebelot/kanagawa.nvim",
+    "sainnhe/everforest",
+    "sainnhe/edge",
+    "rose-pine/neovim",
+    "Bekaboo/dropbar.nvim"
   }
 }

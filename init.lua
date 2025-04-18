@@ -15,3 +15,5 @@ vim.o.updatetime = 200
 
 require("config.lazy")
 require("config")
+
+vim.opt.rtp:prepend("/home/csod4/repos/volt.nvim")

@@ -1,10 +1,20 @@
 vim.o.background = "dark"
 
---[[require("gruvbox").setup({
-	italic = {
-		strings = false,
-		comments = false,
-	}
+
+--[[require("tokyonight").setup({
+  style = "night",
+  styles = {
+    comments = { italic = false },
+    keywords = { italic = false }
+  }
 })]]
 
-vim.cmd.colorscheme("tokyonight")
+require("kanagawa").setup({
+  commentStyle = { italic = false },
+  functionStyle = { bold = true },
+  keywordStyle = { italic = false },
+  statementStyle = { bold = false },
+  ty0eStyle = { bold = false }
+})
+
+vim.cmd.colorscheme("kanagawa")
