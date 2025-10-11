@@ -1,5 +1,3 @@
-local lsp = require("lspconfig")
-
 local on_attach = function()
   vim.keymap.set('n', "<leader>rn", vim.lsp.buf.rename, {})
   vim.keymap.set('n', "<leader>ca", vim.lsp.buf.code_action, {})
@@ -13,7 +11,7 @@ end
 vim.diagnostic.config({
   virtual_text = false,
   update_in_insert = true,
-  virtual_lines = true,
+  virtual_lines = false,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "\u{f530}",
@@ -24,7 +22,7 @@ vim.diagnostic.config({
   }
 })
 
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", }, {
+vim.api.nvim_create_autocmd({ "CursorHold", }, {
   callback = function()
     vim.diagnostic.open_float({
       focusable = false,
@@ -35,7 +33,7 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", }, {
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp.lua_ls.setup({
+vim.lsp.config("lua_ls", {
   capabilities = capabilities,
   on_attach = on_attach,
   on_init = function(client)
@@ -67,18 +65,18 @@ lsp.lua_ls.setup({
   }
 })
 
-lsp.ts_ls.setup({
+vim.lsp.config("ts_ls", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
-lsp.clangd.setup({
-  cmd = { "clangd-19" },
+vim.lsp.config("clangd", {
+  -- cmd = { "clangd-19" },
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
-lsp.rust_analyzer.setup({
+vim.lsp.config("rust_analyzer", {
   capabilities = capabilities,
   on_attach = on_attach,
   settings = {
@@ -106,19 +104,14 @@ lsp.rust_analyzer.setup({
       }
     }
   },
-  root_dir = require("lspconfig.util").root_pattern("Cargo.toml", ".git")
+  root_dir = vim.fs.root(0, { "Cargo.toml", ".git" })
 })
 
-local pyvenv = "/home/john/.local/python-venv"
-lsp.pyright.setup({
-  cmd = { "pyright-langserver", "--stdio" },
+-- local pyvenv = "/home/john/.local/python-venv"
+vim.lsp.config("pyright", {
+  -- cmd = { "pyright-langserver", "--stdio" },
   capabilities = capabilities,
   on_attach = on_attach,
-  on_init = function(client)
-    client.config.settings.python = vim.tbl_deep_extend('force', client.config.settings.python, {
-      pythonPath = pyvenv .. "/private",
-    })
-  end,
   settings = {
     python = {}
   }
@@ -131,15 +124,15 @@ javaconf.root_dir = vim.fs.root(0, {
 javaconf.capabilities = capabilities
 javaconf.on_attach = on_attach
 
-lsp.jdtls.setup(javaconf)
+vim.lsp.config("jdtls", javaconf)
 
 
-lsp.bashls.setup({
+vim.lsp.config("bashls", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
-lsp.jsonls.setup({
+vim.lsp.config("jsonls", {
   capabilities = capabilities,
   on_attach = on_attach,
   settings = {
@@ -150,23 +143,28 @@ lsp.jsonls.setup({
   }
 })
 
-lsp.emmet_language_server.setup({
+vim.lsp.config("emmet_language_server", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
-lsp.cssls.setup({
+vim.lsp.config("cssls", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
-lsp.gopls.setup({
+vim.lsp.config("gopls", {
   capabilities = capabilities,
   on_attach = on_attach,
-  root_dir = require("lspconfig.util").root_pattern("go.mod", ".git")
+  root_dir = vim.fs.root(0, { "go.mod", ".git" })
 })
 
-lsp.html.setup({
+vim.lsp.config("html", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
+
+vim.lsp.enable("clangd")
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("pyright")
+vim.lsp.enable("rust_analyzer")

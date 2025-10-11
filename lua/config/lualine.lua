@@ -2,6 +2,7 @@
 -- Author: shadmansaleh
 -- Credit: glepnir
 local lualine = require('lualine')
+local scheme = require("config.colorscheme")
 
 -- Color table for highlights
 -- stylua: ignore
@@ -39,7 +40,7 @@ local config = {
     -- Disable sections and component separators
     component_separators = '',
     section_separators = '',
-    theme = "tokyonight",
+    theme = scheme,
 	},
   sections = {
     -- these are to remove the defaults
