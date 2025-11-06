@@ -33,32 +33,14 @@ vim.api.nvim_create_autocmd({ "CursorHold", }, {
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-vim.lsp.config("lua_ls", {
+vim.lsp.config("emmylua_ls", {
   capabilities = capabilities,
   on_attach = on_attach,
-  on_init = function(client)
-    if client.workspace_folders then
-      local path = client.workspace_folders[1].name
-      if vim.uv.fs_stat(path .. '/.luarc.json') or
-        vim.uv.fs_stat(path .. '/.luarc.jsonc') then
-        return
-      end
-    end
-  end,
   settings = {
     Lua = {
-      runtime = {
-        version = 'Lua 5.4'
-      },
-      diagnostics = {
-        globals = { 'love', 'vim' }
-      },
       workspace = {
-        checkThirdParty = true,
         library = {
-          vim.fn.expand("$VIMRUNTIME"),
-          os.getenv("HOME") .. "/repos/volt.nvim/",
-          "/usr/local/share/lua"
+          "$VIMRUNTIME"
         }
       }
     }
@@ -74,6 +56,15 @@ vim.lsp.config("clangd", {
   -- cmd = { "clangd-19" },
   capabilities = capabilities,
   on_attach = on_attach,
+  settings = {
+    Lua = {
+      workspace = {
+        library = {
+          "$VIMRUNTIME"
+        }
+      }
+    }
+  }
 })
 
 vim.lsp.config("rust_analyzer", {
@@ -81,10 +72,8 @@ vim.lsp.config("rust_analyzer", {
   on_attach = on_attach,
   settings = {
     ['rust-analyzer'] = {
-      checkOnSave = {
-        command = "clippy",
-      },
-      cachePriming = {
+      checkOnSave = true,
+      pachePriming = {
         enable = true
       },
       imports = {
@@ -164,7 +153,14 @@ vim.lsp.config("html", {
   on_attach = on_attach,
 })
 
+vim.lsp.config("vls", {
+  cmd = { "vls" },
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
 vim.lsp.enable("clangd")
-vim.lsp.enable("lua_ls")
+vim.lsp.enable("emmylua_ls")
 vim.lsp.enable("pyright")
 vim.lsp.enable("rust_analyzer")
+vim.lsp.enable("vls")

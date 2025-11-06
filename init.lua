@@ -1,4 +1,4 @@
-vim.o.shell = "bash"
+vim.o.shell = os.getenv("SHELL")
 
 vim.g.mapleader = ' '
 vim.gnmaplocalleader = ' '
@@ -16,4 +16,9 @@ vim.o.updatetime = 200
 require("config.lazy")
 require("config")
 
-vim.opt.rtp:prepend("/home/csod4/repos/volt.nvim")
+vim.api.nvim_create_autocmd({ "Filetype" }, {
+  pattern = { "*.v" },
+  callback = function(_)
+    vim.cmd[[TSEnable indent]]
+  end
+})
