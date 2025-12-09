@@ -1,11 +1,9 @@
+---@diagnostic disable: param-type-mismatch
 local on_attach = function()
   vim.keymap.set('n', "<leader>rn", vim.lsp.buf.rename, {})
   vim.keymap.set('n', "<leader>ca", vim.lsp.buf.code_action, {})
   vim.keymap.set('n', "<leader>gd", vim.lsp.buf.definition, {})
   vim.keymap.set('n', "<leader>gi", vim.lsp.buf.implementation, {})
-
-  vim.keymap.set('n', "<leader>gr", require("telescope.builtin").lsp_references, {})
-  vim.keymap.set('n', "<leader>lg", require("telescope.builtin").live_grep, {})
 end
 
 vim.diagnostic.config({
@@ -40,7 +38,20 @@ vim.lsp.config("emmylua_ls", {
     Lua = {
       workspace = {
         library = {
-          "$VIMRUNTIME"
+          "$VIMRUNTIME",
+          (os.getenv("HOME")) .. "/.config/love-api",
+          vim.fn.getcwd(0, 0), vim.fn.getcwd(0, 0) .. "/lua"
+        },
+        -- checkThirdParty = false,
+        -- useGitIgnore = false,
+      },
+      runtime = {
+        version = "LuaJIT",
+      },
+      diagnostics = {
+        enable = true,
+        globals = {
+          "love"
         }
       }
     }
@@ -53,18 +64,9 @@ vim.lsp.config("ts_ls", {
 })
 
 vim.lsp.config("clangd", {
-  -- cmd = { "clangd-19" },
+  cmd = { "clangd" },
   capabilities = capabilities,
   on_attach = on_attach,
-  settings = {
-    Lua = {
-      workspace = {
-        library = {
-          "$VIMRUNTIME"
-        }
-      }
-    }
-  }
 })
 
 vim.lsp.config("rust_analyzer", {
@@ -98,11 +100,15 @@ vim.lsp.config("rust_analyzer", {
 
 -- local pyvenv = "/home/john/.local/python-venv"
 vim.lsp.config("pyright", {
-  -- cmd = { "pyright-langserver", "--stdio" },
   capabilities = capabilities,
   on_attach = on_attach,
   settings = {
-    python = {}
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true
+      }
+    }
   }
 })
 
@@ -126,7 +132,6 @@ vim.lsp.config("jsonls", {
   on_attach = on_attach,
   settings = {
     json = {
-      schemas = require("schemastore").json.schemas(),
       validate = { enable = true }
     }
   }
@@ -153,14 +158,7 @@ vim.lsp.config("html", {
   on_attach = on_attach,
 })
 
-vim.lsp.config("vls", {
-  cmd = { "vls" },
-  capabilities = capabilities,
-  on_attach = on_attach,
-})
-
-vim.lsp.enable("clangd")
-vim.lsp.enable("emmylua_ls")
-vim.lsp.enable("pyright")
-vim.lsp.enable("rust_analyzer")
-vim.lsp.enable("vls")
+vim.lsp.enable({
+  "clangd", "emmylua_ls", "ts_ls", "pyright",
+  "rust_analyzer", "gopls", "bashls", "jdtls"
+}, true)

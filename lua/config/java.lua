@@ -1,6 +1,8 @@
-local jdtls_path = "/home/csod4/jdtls"
-local java_bin = (os.getenv("JAVA_HOME") or "") .. "/bin/java"
-local workspace_dir = "/home/csod4/.local/jdtls/workspace"
+local home = os.getenv("HOME")
+local prefix = os.getenv("PREFIX")
+local jdtls_path = home .. "/jdtls"
+local java_bin = (os.getenv("JAVA_HOME") or prefix) .. "/bin/java"
+local workspace_dir = home .. "/.local/jdtls/workspace"
 local project = workspace_dir .. '/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 
 local config = {
@@ -15,7 +17,7 @@ local config = {
     "--add-modules=ALL-SYSTEM",
     "--add-opens", "java.base/java.util=ALL-UNNAMED",
     "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-    "-jar", jdtls_path .. "/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
+    "-jar", jdtls_path .. "/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar",
     "-configuration", jdtls_path .. "/config_linux",
     "-data", project,
   },
