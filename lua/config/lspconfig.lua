@@ -58,7 +58,7 @@ vim.lsp.config("emmylua_ls", {
   }
 })
 
-vim.lsp.config("ts_ls", {
+vim.lsp.config("denols", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
@@ -159,6 +159,6 @@ vim.lsp.config("html", {
 })
 
 vim.lsp.enable({
-  "clangd", "emmylua_ls", "ts_ls", "pyright",
+  "clangd", "emmylua_ls", "denols", "pyright",
   "rust_analyzer", "gopls", "bashls", "jdtls"
 }, true)

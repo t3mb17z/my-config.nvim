@@ -12,32 +12,26 @@ end
 local is_termux_x11 = has_dbus_socket()
 
 local scheme = ""
-local colorscheme = "kanagawa"
+-- local colorscheme = "tokyonight"
 
 local char = vim.fn.input("Is day?: ")
 if char == 's' then
-  scheme = "lotus"
+  scheme = "tokyonight-day"
 elseif char == 'n' then
-  scheme = "wave"
+  scheme = "tokyonight-night"
 else
-  scheme = "dragon"
+  scheme = "tokyonight-storm"
 end
 
-local kanagawa = require("kanagawa")
-
----@diagnostic disable-next-line: missing-fields, param-type-mismatch
-kanagawa.setup({
-  commentStyle = { italic = is_termux_x11 },
-  functionStyle = { italic = false, bold = true },
-  keywordStyle = { italic = is_termux_x11 },
-  statementStyle = { italic = is_termux_x11 },
-  typeStyle = { bold = true },
-  background = {
-    dark = scheme,
-    light = "lotus"
+require("tokyonight").setup({
+  styles = {
+    comments = { italic = is_termux_x11 },
+    keywords = { italic = is_termux_x11 },
+    functions = { bold = true, underline = true },
+    variables = {},
   }
 })
 
-vim.cmd.colorscheme(colorscheme)
+vim.cmd.colorscheme(scheme)
 
-return colorscheme
+return scheme
