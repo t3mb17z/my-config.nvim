@@ -1,10 +1,10 @@
 require("config.colorscheme")
-require("config.lualine")
 require("config.completions")
+require("config.lualine")
 require("config.lspconfig")
 require("config.treesitter")
 require("config.icons")
-require("config.nvim-tree")
+require("config.neo-tree")
 require("config.keymaps")
 
-require("ibl").setup()
+require("nvim-autopairs").setup({})

@@ -7,18 +7,13 @@ vim.opt.number = true
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 vim.opt.wrap = false
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.o.updatetime = 200
+vim.o.autoindent = true
+vim.o.smartindent = true
 
 require("config.lazy")
 require("config")
-
-vim.api.nvim_create_autocmd({ "Filetype" }, {
-  pattern = { "*.v" },
-  callback = function(_)
-    vim.cmd[[TSEnable indent]]
-  end
-})

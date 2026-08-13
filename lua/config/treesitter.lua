@@ -1,9 +1,16 @@
-require("nvim-treesitter.configs").setup({})
-
-vim.api.nvim_create_autocmd({
-	"BufNew", "BufNewFile", "BufRead", "BufEnter"
-}, {
-	callback = function()
-		vim.cmd("TSEnable highlight")
-	end
-})
+-- require('nvim-treesitter').setup {
+--     install_dir = vim.fn.stdpath('data') .. '/site'
+-- }
+--
+-- vim.api.nvim_create_autocmd({ "FileType" }, {
+--     pattern = {
+--         "rust", "c", "cpp", "markdown", "typescript",
+--         "json", "jsonc", "toml", "make", "cmake",
+--         "go", "gomod", "gosum", "java", "asm", "zig",
+--         "javascript", "python", "ld", "sh", "xml", "glsl"
+--     },
+--     callback = function()
+--         vim.treesitter.start()
+--         vim.bo.indentexpr = 'v:lua.require("nvim-treesitter").indentexpr()'
+--     end
+-- })

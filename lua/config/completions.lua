@@ -1,81 +1,89 @@
-local cmp = require("cmp")
+local blink = require("blink.cmp")
+
+blink.setup({
+    keymap = {
+        preset = 'none',
+        ['<C-n>'] = { 'select_next', 'fallback' },
+        ['<Down>'] = {
+            function(cmp)
+                return cmp.select_next({
+                    auto_insert = false
+                })
+            end, 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<Up>'] = {
+            function(cmp)
+                return cmp.select_prev({
+                    auto_insert = false
+                })
+            end, 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback' },
+        sources = {
+            default = { 'lsp', 'path', 'snippets' }
+        },
+        fuzzy = {
+            implementation = "rust"
+        }
+    },
+    appearance = {},
+    completion = {
+        menu = {
+            draw = {
+                columns = {
+                    { "kind_icon", "label", gap = 1 },
+                    { "kind", gap = 0 },
+                },
+                components = {
+                    label = {
+                        text = function(ctx)
+                            return ctx.label
+                        end
+                    },
+                    kind_icon = {
+                        text = function(ctx)
+                            if ctx.source_name ~= "Path" then
+                                return require("lspkind").symbol_map[ctx.kind] or "" .. ctx.icon_gap
+                            end
+
+                            local is_unknown_type = vim.tbl_contains({
+                                "link", "socket", "fifo", "char", "block", "unknown"
+                            }, ctx.item.data.type)
+
+                            local mini_icon, _ = require("mini.icons").get(
+                                is_unknown_type and "os" or ctx.item.data.type,
+                                is_unknown_type and "" or ctx.label
+                            )
+
+                            return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
+                        end,
+                        highlight = function(ctx)
+                            local _, hl, _ = require("mini.icons").get('lsp', ctx.kind)
+                            return hl
+                        end
+                    },
+                    kind = {
+                        highlight = function(ctx)
+                            local _, hl, _ = require("mini.icons").get('lsp', ctx.kind)
+                            return hl
+                        end
+                    }
+                }
+            },
+            border = 'double'
+        },
+        accept = {
+            auto_brackets = {
+                enabled = true
+            }
+        },
+    }
+})
 
 require("luasnip.loaders.from_vscode").load()
 
-local icons = {
-	Array = "",
-	Function = "",
-	Text = "",
-	Object = "",
-	Class = "",
-	Snippet = "",
-	Field = "",
-}
-
-cmp.setup({
-	snippet = {
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body)
-		end,
-	},
-  formatting = {
-    fields = { "kind", "abbr", "menu" },
-    format = function(entry, vim_item)
-      local kind = require("lspkind").cmp_format({
-        mode = "symbol_text",
-        maxwidth = 50
-      })(entry, vim_item)
-      local strings = vim.split(kind.kind, "%s", { trimempty = true })
-      kind.kind = " " .. (strings[1] or "") .. " "
-      kind.menu = "    (" .. (strings[2] or "") .. ")"
-
-      vim_item.dup = ({
-        nvim_lsp = 0,
-        luasnip = 0,
-      })[entry.source.name] or 0
-
-      return kind
-    end,
-  },
-	window = {
-    completion = {
-      winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-      col_offset = -3,
-      side_padding = 0,
-      border = 'rounded'
-    },
-  },
-	mapping = cmp.mapping.preset.insert({
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<Down>"] = function()
-			if cmp.visible() then
-				cmp.select_next_item({ behavior = "select" })
-			else
-				vim.cmd("norm! j")
-			end
-		end,
-		["<Up>"] = function()
-			if cmp.visible() then
-				cmp.select_prev_item({ behavior = "select" })
-			else
-				vim.cmd("norm! k")
-			end
-		end,
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
-	}),
-	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-	},
-	{
-		{ name = "buffer" },
-	})
-})
-
 -- Customization for Pmenu
 vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
-vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
+vim.api.nvim_set_hl(0, "BlinkCmpMenu", { fg = "#ffffff", bg = "#241926" })
 
 vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
 vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
