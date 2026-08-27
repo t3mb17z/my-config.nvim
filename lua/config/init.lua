@@ -4,7 +4,7 @@ require("config.lualine")
 require("config.lspconfig")
 require("config.treesitter")
 require("config.icons")
-require("config.neo-tree")
+require("config.oil")
 require("config.keymaps")
 
 require("nvim-autopairs").setup({})

@@ -1,5 +1,29 @@
 local blink = require("blink.cmp")
 
+local function get_mini_icon(ctx)
+    if ctx.source_name == "Path" then
+        local is_unknown_type = vim.tbl_contains({
+            "link", "socket", "file", "fifo",
+            "char", "block", "unknown"
+        }, ctx.item.data.type)
+
+        local mini_icon, mini_hl = require("mini.icons").get(
+            is_unknown_type and "os" or ctx.item.data.type,
+            is_unknown_type and "" or ctx.label
+        )
+
+        if mini_icon then
+            return mini_icon, mini_hl
+        end
+    end
+
+    local mini_icon, mini_hl, _ = require("mini.icons").get(
+        "lsp", ctx.kind
+    )
+
+    return mini_icon, mini_hl
+end
+
 blink.setup({
     keymap = {
         preset = 'none',
@@ -18,11 +42,24 @@ blink.setup({
                 })
             end, 'fallback' },
         ['<CR>'] = { 'accept', 'fallback' },
-        sources = {
-            default = { 'lsp', 'path', 'snippets' }
-        },
+        ['<C-Space>'] = { 'show' },
         fuzzy = {
             implementation = "rust"
+        }
+    },
+    sources = {
+        default = { 'lsp', 'snippets' },
+        providers = {
+            lsp = {
+                score_offset = 100
+            },
+            snippets = {
+                score_offset = -10,
+                enabled = function()
+                    local ok, node = pcall(vim.treesitter.get_node)
+                    return not (ok and node and node:type():match('string'))
+                end
+            }
         }
     },
     appearance = {},
@@ -41,29 +78,17 @@ blink.setup({
                     },
                     kind_icon = {
                         text = function(ctx)
-                            if ctx.source_name ~= "Path" then
-                                return require("lspkind").symbol_map[ctx.kind] or "" .. ctx.icon_gap
-                            end
-
-                            local is_unknown_type = vim.tbl_contains({
-                                "link", "socket", "fifo", "char", "block", "unknown"
-                            }, ctx.item.data.type)
-
-                            local mini_icon, _ = require("mini.icons").get(
-                                is_unknown_type and "os" or ctx.item.data.type,
-                                is_unknown_type and "" or ctx.label
-                            )
-
-                            return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
+                            local kind_icon, _ = get_mini_icon(ctx)
+                            return kind_icon
                         end,
                         highlight = function(ctx)
-                            local _, hl, _ = require("mini.icons").get('lsp', ctx.kind)
+                            local _, hl = get_mini_icon(ctx)
                             return hl
                         end
                     },
                     kind = {
                         highlight = function(ctx)
-                            local _, hl, _ = require("mini.icons").get('lsp', ctx.kind)
+                            local _, hl = get_mini_icon(ctx)
                             return hl
                         end
                     }

@@ -21,7 +21,7 @@ vim.diagnostic.config({
 })
 
 vim.api.nvim_create_autocmd({ "CursorHold", }, {
-    callback = function()
+    callback = function(args)
         vim.diagnostic.open_float({
             focusable = false,
             border = "rounded",
@@ -91,6 +91,7 @@ vim.lsp.config("zls", {
 })
 
 vim.lsp.config("rust_analyzer", {
+    cmd = { 'rust-analyzer' },
     filetypes = { 'rust' },
     capabilities = capabilities,
     on_attach = on_attach,
@@ -149,6 +150,8 @@ vim.lsp.config("jdtls", javaconf)
 
 
 vim.lsp.config("bashls", {
+    cmd = { 'bash-language-server' },
+    filetypes = {},
     capabilities = capabilities,
     on_attach = on_attach,
 })
@@ -171,6 +174,7 @@ vim.lsp.config("jsonls", {
 -- })
 
 vim.lsp.config("gopls", {
+    cmd = { 'gopls' },
     filetypes = { 'go', 'mod' },
     capabilities = capabilities,
     on_attach = on_attach,

@@ -5,7 +5,7 @@ vim.gnmaplocalleader = ' '
 
 vim.opt.number = true
 vim.opt.cursorline = true
-vim.opt.cursorcolumn = true
+-- vim.opt.cursorcolumn = true
 vim.opt.wrap = false
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
