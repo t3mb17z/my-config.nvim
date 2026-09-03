@@ -21,13 +21,25 @@ vim.diagnostic.config({
 })
 
 vim.api.nvim_create_autocmd({ "CursorHold", }, {
-    callback = function(args)
+    callback = function(_args)
         vim.diagnostic.open_float({
             focusable = false,
             border = "rounded",
         })
     end
 })
+
+-- vim.api.nvim_create_autocmd({ "LspAttach" }, {
+--     callback = function(args)
+--         local client = vim.lsp.get_client_by_id(args.data.client_id)
+--
+--         if client then
+--             if client.server_capabilities then
+--                 client.server_capabilities.semanticTokensProvider = nil
+--             end
+--         end
+--     end
+-- })
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 

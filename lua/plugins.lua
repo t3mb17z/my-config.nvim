@@ -1,9 +1,4 @@
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPre", "BufNewFile" },
-        build = ":TSUpdate"
-    },
     { 'nvim-lualine/lualine.nvim', event = "VeryLazy" },
     {
         'windwp/nvim-autopairs',
@@ -34,7 +29,11 @@ return {
         opts = {},
     },
 
-    { "rebelot/kanagawa.nvim", lazy = true },
+    {
+        "ellisonleao/gruvbox.nvim",
+        priority = 1000,
+        config = true,
+    },
     {
         "EdenEast/nightfox.nvim", lazy = false,
         priority = 1000

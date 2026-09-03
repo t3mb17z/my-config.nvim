@@ -11,8 +11,10 @@ vim.o.background = "dark"
 --
 -- local is_termux_x11 = has_dbus_socket()
 
-require("nightfox").setup({})
+require("nightfox").setup({
+    
+})
 
-vim.cmd.colorscheme("terafox")
+vim.cmd.colorscheme("duskfox")
 
-return "terafox"
+return "duskfox"
