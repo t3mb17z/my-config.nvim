@@ -71,22 +71,22 @@ vim.lsp.config("emmylua_ls", {
     root_markers = { ".emmyrc.json", ".luarc.json", ".git" }
 })
 
-vim.lsp.config("tsgo", {
-    filetypes = { 'javascript', 'typescript' },
-    capabilities = capabilities,
-    on_attach = on_attach,
-})
+-- vim.lsp.config("tsgo", {
+--     filetypes = { 'javascript', 'typescript' },
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+-- })
 
 -- vim.lsp.config("denols", {
 --     capabilities = capabilities,
 --     on_attach = on_attach,
 -- })
 
-vim.lsp.config("emmet_language_server", {
-    filetypes = { 'html', 'css' },
-    capabilities = capabilities,
-    on_attach = on_attach,
-})
+-- vim.lsp.config("emmet_language_server", {
+--     filetypes = { 'html', 'css' },
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+-- })
 
 vim.lsp.config("clangd", {
     cmd = { "clangd", "--inlay-hints", "--clang-tidy" },
@@ -100,6 +100,15 @@ vim.lsp.config("zls", {
     filetypes = { 'zig', 'zon' },
     capabilities = capabilities,
     on_attach = on_attach,
+})
+
+vim.lsp.config("nim_langserver", {
+    cmd = { 'nimlangserver' },
+    filetypes = { 'nim' },
+    capabilities = capabilities,
+    on_attach = on_attach,
+    root_dir = vim.fs.root(0, { '*.nimble', '.git' }) or
+        vim.fs.dirname(vim.api.nvim_buf_get_name(0))
 })
 
 vim.lsp.config("rust_analyzer", {
@@ -132,6 +141,20 @@ vim.lsp.config("rust_analyzer", {
         }
     },
     root_dir = vim.fs.root(0, { "Cargo.toml", ".git" })
+})
+
+vim.lsp.config("gopls", {
+    cmd = { 'gopls' },
+    filetypes = { 'go', 'gomod' },
+    capabilities = capabilities,
+    on_attach = on_attach,
+    root_dir = vim.fs.root(0, { "go.mod", ".git" }),
+    settings = {
+        gopls = {
+            completeUnimported = true,
+            usePlaceholders = true
+        }
+    }
 })
 
 -- local pyvenv = "/home/john/.local/python-venv"
@@ -168,30 +191,22 @@ vim.lsp.config("bashls", {
     on_attach = on_attach,
 })
 
-vim.lsp.config("jsonls", {
-    cmd = { "vscode-json-languageserver", "--stdio" },
-    filetypes = { 'json', 'jsonc' },
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-        json = {
-            validate = { enable = true }
-        }
-    }
-})
+-- vim.lsp.config("jsonls", {
+--     cmd = { "vscode-json-languageserver", "--stdio" },
+--     filetypes = { 'json', 'jsonc' },
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+--     settings = {
+--         json = {
+--             validate = { enable = true }
+--         }
+--     }
+-- })
 
 -- vim.lsp.config("cssls", {
 --     capabilities = capabilities,
 --     on_attach = on_attach,
 -- })
-
-vim.lsp.config("gopls", {
-    cmd = { 'gopls' },
-    filetypes = { 'go', 'mod' },
-    capabilities = capabilities,
-    on_attach = on_attach,
-    root_dir = vim.fs.root(0, { "go.mod", ".git" })
-})
 
 -- vim.lsp.config("html", {
 --     capabilities = capabilities,
@@ -201,5 +216,5 @@ vim.lsp.config("gopls", {
 vim.lsp.enable({
     "clangd", "emmylua_ls", "tsgo", "ty",
     "rust_analyzer", "bashls", "jdtls", "gopls",
-    "jsonls", "zls", "emmet_language_server"
+    "zls", "nim_langserver"
 }, true)

@@ -31,7 +31,7 @@ return {
 
     {
         "ellisonleao/gruvbox.nvim",
-        priority = 1000,
+        priority = 100,
         config = true,
     },
     {
@@ -40,4 +40,9 @@ return {
     }, -- lazy
 
     { 'nvim-mini/mini.icons', version = '*' },
+    {
+        'nvim-treesitter/nvim-treesitter',
+        lazy = false,
+        build = ':TSUpdate'
+    }
 }
