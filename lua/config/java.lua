@@ -1,5 +1,5 @@
-local home = os.getenv("HOME")
-local prefix = os.getenv("PREFIX")
+local home = os.getenv("HOME") or ""
+local prefix = os.getenv("PREFIX") or ""
 local jdtls_path = home .. "/jdtls"
 local java_bin = (os.getenv("JAVA_HOME") or prefix) .. "/bin/java"
 local workspace_dir = home .. "/.local/jdtls/workspace"
